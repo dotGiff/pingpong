@@ -26,6 +26,6 @@ class Game extends Model
     {
         return $this->whereNull('ended_at')
             ->orderBy('created_at', 'desc')
-            ->has('users', '<', 2);
+            ->has('users', '=', 1);
     }
 }

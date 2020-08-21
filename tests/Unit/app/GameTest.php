@@ -32,10 +32,12 @@ class GameTest extends TestCase
     public function getOpenGamesBasedOnTimestamps()
     {
         $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
         $game = factory(Game::class)->create([
             'started_at' => Carbon::now()->subMinute(),
             'ended_at' => null,
         ])->first();
+        $game->users()->attach($user2);
         factory(Game::class, 3)->create();
 
         $this->assertEquals($game, $user->games()->open()->first());

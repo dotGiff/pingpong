@@ -32,4 +32,33 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Game::class);
     }
+
+    public function looking()
+    {
+        $return = '';
+        if ($game = Game::open()->first()) {
+            $return = "You will be playing against {$game->users()->first()->username}";
+        } else {
+            $game = new Game();
+            $game->save();
+            $return = "Game created, waiting for challenger.";
+        }
+
+        $game->users()->attach($this);
+
+        return $return;
+    }
+
+    public function join()
+    {
+        if ($game = Game::open()->first()) {
+            $username = $game->users()->first()->username;
+            $game->users()->attach($this);
+            $game->save();
+
+            return "You will be playing against {$username}";
+        } else {
+            return 'No available games.';
+        }
+    }
 }
