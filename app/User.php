@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Jobs\EndGame;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,18 +36,19 @@ class User extends Authenticatable
 
     public function looking()
     {
-        $return = '';
         if ($game = Game::open()->first()) {
-            $return = "You will be playing against {$game->users()->first()->username}";
+            $username = $game->users()->first()->username;
+            $game->users()->attach($this);
+            dispatch(new EndGame($game))->delay(30);
+
+            return "You will be playing against {$username}";
         } else {
             $game = new Game();
             $game->save();
-            $return = "Game created, waiting for challenger.";
+            $game->users()->attach($this);
+
+            return "Game created, waiting for challenger.";
         }
-
-        $game->users()->attach($this);
-
-        return $return;
     }
 
     public function join()
@@ -55,6 +57,7 @@ class User extends Authenticatable
             $username = $game->users()->first()->username;
             $game->users()->attach($this);
             $game->save();
+            dispatch(new EndGame($game))->delay(30);
 
             return "You will be playing against {$username}";
         } else {
