@@ -21,4 +21,11 @@ class Game extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function ScopeOpen()
+    {
+        return $this->whereNull('ended_at')
+            ->orderBy('created_at', 'desc')
+            ->has('users', '<', 2);
+    }
 }
