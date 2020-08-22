@@ -14,7 +14,7 @@ class EndGame implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $game;
+    public $game;
 
     /**
      * Create a new job instance.

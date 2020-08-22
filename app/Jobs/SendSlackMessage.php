@@ -12,8 +12,8 @@ class SendSlackMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $channel;
-    protected $message;
+    public $channel;
+    public $message;
 
     /**
      * Create a new job instance.
