@@ -35,7 +35,7 @@ class User extends Model
 
     public function looking()
     {
-        if ($game = Game::open()->first()) {
+        if ($game = Game::openGames()->first()) {
             $username = $game->users()->first()->username;
             $game->users()->attach($this);
             dispatch(new EndGame($game))->delay(30);
@@ -52,7 +52,7 @@ class User extends Model
 
     public function join()
     {
-        if ($game = Game::open()->first()) {
+        if ($game = Game::openGames()->first()) {
             $username = $game->users()->first()->username;
             $game->users()->attach($this);
             $game->save();

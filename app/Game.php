@@ -22,7 +22,7 @@ class Game extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function ScopeOpen()
+    public function ScopeOpenGames()
     {
         return $this->whereNull('ended_at')
             ->orderBy('created_at', 'desc')

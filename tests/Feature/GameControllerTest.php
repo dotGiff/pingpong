@@ -91,7 +91,7 @@ class GameControllerTest extends TestCase
         // Assert open game
         $this->assertCount(1, User::all());
         $this->assertCount(1, Game::all());
-        $this->assertNotEmpty(Game::open()->first());
+        $this->assertNotEmpty(Game::openGames()->first());
 
         // Make request and assert 200 response
         $response = $this->post('/api/looking', [
@@ -103,7 +103,7 @@ class GameControllerTest extends TestCase
         $this->assertCount(2, User::all());
         $this->assertCount(1, Game::all());
         $this->assertCount(2, $game->refresh()->users);
-        $this->assertEmpty(Game::open()->first());
+        $this->assertEmpty(Game::openGames()->first());
 
         Queue::assertPushed(function (SendSlackMessage $job) use ($user1) {
             return $job->channel = 'pongbot' && $job->message = "You will be playing against {$user1->username}";
@@ -133,7 +133,7 @@ class GameControllerTest extends TestCase
         // Assert open game
         $this->assertCount(1, User::all());
         $this->assertCount(1, Game::all());
-        $this->assertNotEmpty(Game::open()->first());
+        $this->assertNotEmpty(Game::openGames()->first());
 
         // Make request and assert 200 response
         $response = $this->post('/api/join', [
@@ -145,7 +145,7 @@ class GameControllerTest extends TestCase
         $this->assertCount(2, User::all());
         $this->assertCount(1, Game::all());
         $this->assertCount(2, $game->refresh()->users);
-        $this->assertEmpty(Game::open()->first());
+        $this->assertEmpty(Game::openGames()->first());
 
         Queue::assertPushed(function (SendSlackMessage $job) use ($user1) {
             return $job->channel = 'pongbot' && $job->message = "You will be playing against {$user1->username}";
@@ -165,7 +165,7 @@ class GameControllerTest extends TestCase
         // Assert open game
         $this->assertCount(0, User::all());
         $this->assertCount(0, Game::all());
-        $this->assertEmpty(Game::open()->first());
+        $this->assertEmpty(Game::openGames()->first());
 
         // Make request and assert 200 response
         $response = $this->post('/api/join', [
@@ -176,7 +176,7 @@ class GameControllerTest extends TestCase
         // Assert new user joined game and there there are no more open games
         $this->assertCount(1, User::all());
         $this->assertCount(0, Game::all());
-        $this->assertEmpty(Game::open()->first());
+        $this->assertEmpty(Game::openGames()->first());
 
         Queue::assertPushed(function (SendSlackMessage $job) {
             return $job->channel = 'pongbot' && $job->message = "No available games.";

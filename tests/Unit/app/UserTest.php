@@ -49,7 +49,7 @@ class UserTest extends TestCase
         ]);
         $user2->games()->attach($game);
 
-        $this->assertCount(1, Game::open()->get());
+        $this->assertCount(1, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
         $this->assertEquals("You will be playing against {$user2->username}", $user1->looking());
         $this->assertCount(1, $user1->refresh()->games);
@@ -66,14 +66,14 @@ class UserTest extends TestCase
         ]);
         $user2->games()->attach($game);
 
-        $this->assertCount(1, Game::open()->get());
+        $this->assertCount(1, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
         $this->assertEquals("You will be playing against {$user2->username}", $user1->join());
         $this->assertCount(1, $user1->refresh()->games);
     }
 
     /** @test */
-    public function joinNoGamesOpen()
+    public function joinNoGamesopenGames()
     {
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -85,7 +85,7 @@ class UserTest extends TestCase
         $user2->games()->attach($game);
         $user3->games()->attach($game);
 
-        $this->assertCount(0, Game::open()->get());
+        $this->assertCount(0, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
         $this->assertEquals("No available games.", $user1->join());
         $this->assertCount(0, $user1->refresh()->games);

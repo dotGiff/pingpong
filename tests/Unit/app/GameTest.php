@@ -40,7 +40,7 @@ class GameTest extends TestCase
         $game->users()->attach($user2);
         factory(Game::class, 3)->create();
 
-        $this->assertEquals($game, $user->games()->open()->first());
+        $this->assertEquals($game, $user->games()->openGames()->first());
     }
 
     /** @test */
@@ -55,6 +55,6 @@ class GameTest extends TestCase
         $game->users()->attach($user);
         $game->users()->attach($user2);
 
-        $this->assertEmpty($user->games()->open()->first());
+        $this->assertEmpty($user->games()->openGames()->first());
     }
 }
