@@ -11,11 +11,7 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    /** @test */
     public function getGames()
     {
         $count = rand(2, 6);
@@ -73,7 +69,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function joinNoGamesopenGames()
+    public function joinNoGamesOpenGames()
     {
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();

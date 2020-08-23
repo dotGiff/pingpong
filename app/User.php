@@ -28,11 +28,17 @@ class User extends Model
         'password', 'remember_token',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function games()
     {
         return $this->belongsToMany(Game::class);
     }
 
+    /**
+     * @return string
+     */
     public function looking()
     {
         if ($game = Game::openGames()->first()) {
@@ -52,6 +58,9 @@ class User extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     public function join()
     {
         if ($game = Game::openGames()->first()) {

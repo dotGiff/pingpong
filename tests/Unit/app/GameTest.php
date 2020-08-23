@@ -12,11 +12,7 @@ class GameTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     *
-     * @return void
-     */
+    /** @test */
     public function getUsers()
     {
         $count = 2;

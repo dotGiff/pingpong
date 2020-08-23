@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendSlackMessage;
 use App\User;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class GameController extends Controller
 {
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @return ResponseFactory|Response
+     * @throws ValidationException
      */
     public function looking(Request $request)
     {
@@ -28,8 +31,8 @@ class GameController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @return ResponseFactory|Response
+     * @throws ValidationException
      */
     public function join(Request $request)
     {
