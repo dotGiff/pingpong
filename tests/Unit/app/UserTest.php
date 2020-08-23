@@ -29,7 +29,7 @@ class UserTest extends TestCase
         $this->assertCount(0, Game::all());
 
         $user = factory(User::class)->create();
-        $this->assertEquals("Game created, waiting for challenger.", $user->looking());
+        $this->assertEquals("Game created, waiting for challenger.", $user->looking()->getMessage());
 
         $this->assertCount(1, Game::all());
     }
@@ -47,7 +47,7 @@ class UserTest extends TestCase
 
         $this->assertCount(1, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
-        $this->assertEquals("You will be playing against {$user2->username}", $user1->looking());
+        $this->assertEquals("You will be playing against {$user2->username}", $user1->looking()->getMessage());
         $this->assertCount(1, $user1->refresh()->games);
     }
 
@@ -64,7 +64,7 @@ class UserTest extends TestCase
 
         $this->assertCount(1, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
-        $this->assertEquals("You will be playing against {$user2->username}", $user1->join());
+        $this->assertEquals("You will be playing against {$user2->username}", $user1->join()->getMessage());
         $this->assertCount(1, $user1->refresh()->games);
     }
 
@@ -83,7 +83,7 @@ class UserTest extends TestCase
 
         $this->assertCount(0, Game::openGames()->get());
         $this->assertCount(0, $user1->games);
-        $this->assertEquals("No available games.", $user1->join());
+        $this->assertEquals("No available games.", $user1->join()->getMessage());
         $this->assertCount(0, $user1->refresh()->games);
     }
 }

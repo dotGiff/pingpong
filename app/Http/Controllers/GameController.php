@@ -24,7 +24,7 @@ class GameController extends Controller
 
         $user = User::firstOrCreate(['username' => $request->get('username')]);
 
-        dispatch(new SendSlackMessage('pongbot', $user->looking()));
+        dispatch(new SendSlackMessage('pongbot', $user->looking()->getMessage()));
 
         return response('', 200);
     }
@@ -42,7 +42,7 @@ class GameController extends Controller
 
         $user = User::firstOrCreate(['username' => $request->get('username')]);
 
-        dispatch(new SendSlackMessage('pongbot', $user->join()));
+        dispatch(new SendSlackMessage('pongbot', $user->join()->getMessage()));
 
         return response('', 200);
     }

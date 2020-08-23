@@ -4,6 +4,7 @@ namespace App;
 
 use App\Jobs\EndGame;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Model
@@ -29,7 +30,12 @@ class User extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @var string|null
+     */
+    protected $message;
+
+    /**
+     * @return BelongsToMany
      */
     public function games()
     {
@@ -37,31 +43,49 @@ class User extends Model
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function looking()
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string|null $message
+     */
+    public function setMessage(?string $message): void
+    {
+        $this->message = $message;
+    }
+
+    /**
+     * @return $this
+     */
+    public function looking(): User
     {
         if ($game = Game::openGames()->first()) {
             $username = $game->users()->first()->username;
             $game->users()->attach($this);
             dispatch(new EndGame($game))->delay(30);
 
-            return "You will be playing against {$username}";
+            $this->setMessage("You will be playing against {$username}");
         } elseif(Game::gameInProgress()->count()) {
-            return "There is a game in progress, try again later.";
+            $this->setMessage("There is a game in progress, try again later.");
         } else {
             $game = new Game();
             $game->save();
             $game->users()->attach($this);
 
-            return "Game created, waiting for challenger.";
+            $this->setMessage("Game created, waiting for challenger.");
         }
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return $this
      */
-    public function join()
+    public function join(): User
     {
         if ($game = Game::openGames()->first()) {
             $username = $game->users()->first()->username;
@@ -69,9 +93,11 @@ class User extends Model
             $game->save();
             dispatch(new EndGame($game))->delay(30);
 
-            return "You will be playing against {$username}";
+            $this->setMessage("You will be playing against {$username}");
         } else {
-            return 'No available games.';
+            $this->setMessage('No available games.');
         }
+
+        return $this;
     }
 }
