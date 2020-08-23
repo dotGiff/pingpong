@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Game;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -49,6 +50,26 @@ class UserTest extends TestCase
         $this->assertCount(0, $user1->games);
         $this->assertEquals("You will be playing against {$user2->username}", $user1->looking()->getMessage());
         $this->assertCount(1, $user1->refresh()->games);
+    }
+
+    /** @test */
+    public function lookingGameAlreadyInProgress()
+    {
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $user3 = factory(User::class)->create();
+        $game = factory(Game::class)->create([
+            'started_at' => Carbon::now()->subMinute(),
+            'ended_at' => null,
+        ])->first();
+        $user2->games()->attach($game);
+        $user3->games()->attach($game);
+
+        $this->assertEquals("There is a game in progress, try again later.", $user1->looking()->getMessage());
+        $this->assertCount(2, $game->users);
+        $this->assertEmpty($user1->games->first());
+        $this->assertNotEmpty($user2->games->first());
+        $this->assertNotEmpty($user3->games->first());
     }
 
     /** @test */
