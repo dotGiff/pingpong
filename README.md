@@ -38,9 +38,20 @@ There are a few things that can happen when you send the `/looking` command:
 * If there is an open game, you join it.
 * Once you join an open game a 30 minute countdown will start, when that countdown reaches 0 the game will end.
 
+## Potential future features
+As I was building this out I couldn't help but think of some cool features that I would enjoy using (and building), so I thought I'd jot them down. Some of them are more feasible than others and would have to be prioritized based on scope and need.
+* `/startgame` and `/endgame` endpoints.
+* Score values and endpoints on the `games` table, to be updated when the game has ended.
+    * `/leaderboard` endpoint.
+    * Tournament bracketing, with seeding based on the leaderboard. There's definitely a lot to unpack here.
+* Leave the 30 minute timer but make it a reminder to end the game and leave a score.
+* Add ability to manage multiple tables/games going at once.
+    * This ~could~ _would_ get hairy to manage as a pure Slack app. Maybe it would work to have a channel for each table?
+* Scheduled games, something like `/join in 25 minutes`, or `/looking at 4:30pm`.
+
 ## Conclusion
 I felt I wasn't able to represent myself very well in the online whiteboard interview.
 I hope this shows that I have a grasp on data modeling, building APIs, OOP, and PHP/Laravel.
 That being said, even this project is limited and is intended to show competence, not a full functioning production ready app.
 There are decision made here to simply show knowledge/execution of features and patterns that I may have reconsidered in a production app.
-For example, instead of automatically ending a game at 30 minutes via a queued job, I would likely write a third `/endgame` endpoint.
+For example, instead of automatically ending a game at 30 minutes via a queued job, I would likely write a third `/endgame` endpoint (see above).
