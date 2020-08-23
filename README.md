@@ -6,6 +6,7 @@ _*In response to Scott Gifford's poor performance on a white board interview wit
 * I built this over a weekend from memory, so I'm sure I got a business rule or two wrong. 
 * I haven't deployed it, so it isn't actually integrated with Slack yet.
 * I've only interacted with the code through phpunit.
+* The test suite should define all relevant features of the app.
 
 ### How to run locally
 1. Clone repository
@@ -23,22 +24,23 @@ The reason it's restricted in the code (and not the database) is so, in the futu
 _*Game scopes will have to be redefined once you expand the users per game passed two. 
 There will likely need to be more explicit booleans and functionality to accomplish that feature._
 
-## How to use (if it were integrated with Slack)
+## How to use (On Slack)
 There are two ways to interact with the app. One way is to initiate a game `/looking` and the second is to `/join` an existing/open game.
 
 ### /looking
-There are a few things that can happen when you send the `/looing` command:
+There are a few things that can happen when you send the `/looking` command:
 * If your user doesn't exist, it will create it using your Slack username.
 * If there is already an open game, you will join that one.
 * If there are no open games it will initiate your game.
 
 ### /join
-* If there is an open game, you join it.
 * If there are no open games, you get this message "No available games." and you'll have to wait.
+* If there is an open game, you join it.
 * Once you join an open game a 30 minute countdown will start, when that countdown reaches 0 the game will end.
 
 ## Conclusion
 I felt I wasn't able to represent myself very well in the online whiteboard interview.
-I hope this shows that I have a strong grasp on data modeling, building APIs, OOP, and PHP/Laravel.
+I hope this shows that I have a grasp on data modeling, building APIs, OOP, and PHP/Laravel.
 That being said, even this project is limited and is intended to show competence, not a full functioning production ready app.
 There are decision made here to simply show knowledge/execution of features and patterns that I may have reconsidered in a production app.
+For example, instead of automatically ending a game at 30 minutes via a queued job, I would likely write a third `/endgame` endpoint.
