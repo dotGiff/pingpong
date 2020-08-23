@@ -30,12 +30,12 @@ class Game extends Model
             ->has('users', '=', 1);
     }
 
-    public static function gameInProgress()
+    public function ScopeGameInProgress()
     {
-        return Game::whereNull('ended_at')
+        return $this->whereNull('ended_at')
             ->whereNotNull('started_at')
             ->orderBy('created_at', 'desc')
             ->has('users', 2)
-            ->count() ? true : false;
+            ->orderBy('created_at', 'desc');
     }
 }

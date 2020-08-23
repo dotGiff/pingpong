@@ -41,6 +41,8 @@ class User extends Model
             dispatch(new EndGame($game))->delay(30);
 
             return "You will be playing against {$username}";
+        } elseif(Game::gameInProgress()->count()) {
+            return "There is a game in progress, try again later.";
         } else {
             $game = new Game();
             $game->save();

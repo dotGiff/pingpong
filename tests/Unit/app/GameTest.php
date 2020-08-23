@@ -70,6 +70,6 @@ class GameTest extends TestCase
         $game->users()->attach($user);
         $game->users()->attach($user2);
 
-        $this->assertTrue(Game::gameInProgress());
+        $this->assertNotEmpty(Game::gameInProgress()->first());
     }
 }
