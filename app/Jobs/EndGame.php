@@ -19,7 +19,7 @@ class EndGame implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Game $game
      */
     public function __construct(Game $game)
     {

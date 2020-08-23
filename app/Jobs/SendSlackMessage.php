@@ -18,7 +18,8 @@ class SendSlackMessage implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param $channel string
+     * @param $message string
      */
     public function __construct($channel, $message)
     {
@@ -33,6 +34,6 @@ class SendSlackMessage implements ShouldQueue
      */
     public function handle()
     {
-        // @todo: send $message to Slack @channel
+        // @todo: send $message to Slack $channel
     }
 }
