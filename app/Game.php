@@ -25,7 +25,17 @@ class Game extends Model
     public function ScopeOpenGames()
     {
         return $this->whereNull('ended_at')
+            ->whereNull('started_at')
             ->orderBy('created_at', 'desc')
             ->has('users', '=', 1);
+    }
+
+    public static function gameInProgress()
+    {
+        return Game::whereNull('ended_at')
+            ->whereNotNull('started_at')
+            ->orderBy('created_at', 'desc')
+            ->has('users', 2)
+            ->count() ? true : false;
     }
 }

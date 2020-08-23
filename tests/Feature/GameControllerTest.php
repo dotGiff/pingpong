@@ -83,7 +83,7 @@ class GameControllerTest extends TestCase
             'username' => 'paul.simon'
         ]);
         $game = factory(Game::class)->create([
-            'started_at' => Carbon::now()->subMinute(),
+            'started_at' => null,
             'ended_at' => null,
         ]);
         $user1->games()->attach($user1);
@@ -125,7 +125,7 @@ class GameControllerTest extends TestCase
             'username' => 'paul.simon'
         ]);
         $game = factory(Game::class)->create([
-            'started_at' => Carbon::now()->subMinute(),
+            'started_at' => null,
             'ended_at' => null,
         ]);
         $user1->games()->attach($user1);
@@ -162,9 +162,19 @@ class GameControllerTest extends TestCase
      */
     public function joinNoOpenGames()
     {
-        // Assert open game
-        $this->assertCount(0, User::all());
-        $this->assertCount(0, Game::all());
+        // Setup existing user and open game
+        $user1 = factory(User::class)->create([
+            'username' => 'paul.simon'
+        ]);
+        $game = factory(Game::class)->create([
+            'started_at' => Carbon::now()->subMinute(),
+            'ended_at' => null,
+        ]);
+        $user1->games()->attach($user1);
+
+        // Assert no open game
+        $this->assertCount(1, User::all());
+        $this->assertCount(1, Game::all());
         $this->assertEmpty(Game::openGames()->first());
 
         // Make request and assert 200 response
@@ -174,8 +184,8 @@ class GameControllerTest extends TestCase
         $response->assertStatus(200);
 
         // Assert new user joined game and there there are no more open games
-        $this->assertCount(1, User::all());
-        $this->assertCount(0, Game::all());
+        $this->assertCount(2, User::all());
+        $this->assertCount(1, Game::all());
         $this->assertEmpty(Game::openGames()->first());
 
         Queue::assertPushed(function (SendSlackMessage $job) {

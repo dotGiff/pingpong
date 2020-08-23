@@ -29,21 +29,6 @@ class GameTest extends TestCase
     }
 
     /** @test */
-    public function getOpenGamesBasedOnTimestamps()
-    {
-        $user = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
-        $game = factory(Game::class)->create([
-            'started_at' => Carbon::now()->subMinute(),
-            'ended_at' => null,
-        ])->first();
-        $game->users()->attach($user2);
-        factory(Game::class, 3)->create();
-
-        $this->assertEquals($game, $user->games()->openGames()->first());
-    }
-
-    /** @test */
     public function getOpenGamesBasedOnUsers()
     {
         $user = factory(User::class)->create();
@@ -56,5 +41,35 @@ class GameTest extends TestCase
         $game->users()->attach($user2);
 
         $this->assertEmpty($user->games()->openGames()->first());
+    }
+
+    /** @test */
+    public function getOpenGamesStillInProgress()
+    {
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $game = factory(Game::class)->create([
+            'started_at' => Carbon::now()->subMinute(),
+            'ended_at' => null,
+        ])->first();
+        $game->users()->attach($user2);
+        factory(Game::class, 3)->create();
+
+        $this->assertEmpty($user->games()->openGames()->first());
+    }
+
+    /** @test */
+    public function getGamesInProgress()
+    {
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $game = factory(Game::class)->create([
+            'started_at' => Carbon::now()->subMinute(),
+            'ended_at' => null,
+        ])->first();
+        $game->users()->attach($user);
+        $game->users()->attach($user2);
+
+        $this->assertTrue(Game::gameInProgress());
     }
 }
